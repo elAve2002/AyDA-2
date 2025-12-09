@@ -16,6 +16,7 @@
             },
             "problemMatcher": []
         },
+        
         {
             "type": "cppbuild",
             "label": "Compilar (build)",
@@ -23,37 +24,27 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                "-I${workspaceFolder}/include",  // Directorio de Headers
+                "${workspaceFolder}/src/*.cpp",  // **Todos** los .cpp en src/
                 "-Wall",
                 "-Wextra",
                 "-std=c++17",
-                "${file}",
                 "-o",
-                "${fileDirname}/../output/${fileBasenameNoExtension}"
+                "${workspaceFolder}/output/${workspaceFolderBasename}" 
             ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": ["$gcc"],
-            "presentation": {
-                "echo": true,
-                "reveal": "never",  // No mostrar durante build & run
-                "focus": false,
-                "panel": "dedicated",
-                "clear": true  // Limpiar terminal cada vez
-            },
-            "detail": "Compila el archivo actual"
-        },
-        {
+        }
+        
+        ,{
             "label": "Ejecutar (run)",
             "type": "shell",
-            "command": "${fileDirname}/../output/${fileBasenameNoExtension}",
+            "command": "${workspaceFolder}/output/${workspaceFolderBasename}",
             "args": [],
             "presentation": {
                 "echo": true,
-                "reveal": "always",  // SIEMPRE mostrar
-                "focus": true,       // Enfocar automáticamente
+                "reveal": "always",
+                "focus": true,
                 "panel": "dedicated",
-                "clear": false       // No limpiar para ver toda la salida
+                "clear": false
             },
             "problemMatcher": []
         },
