@@ -55,8 +55,13 @@ const C &Grafo<C>::Arco::devolverCosto() const
 template <typename C>
 Grafo<C>::Grafo()
 // Complejidad temporal: O(1).
-{
-}
+{this->dirigido = false;}
+
+
+template <typename C>
+Grafo<C>::Grafo(bool esDirigido)
+// Complejidad temporal: O(1).
+{this->dirigido = esDirigido;}
 
 // ----------------------------------------------------------------------------------------------------------------- //
 
@@ -268,9 +273,12 @@ void Grafo<C>::agregarArco(const int &origen, const int &destino, const C &costo
 // Complejidad temporal: O(log n), siendo n el número de vértices del grafo. En el peor de los casos, el número
 // de adyacentes de un vértice será tan grande como el número de vértices.
 {
-    grafo[origen].insert({destino, costo});
+    if(!existeArco(origen,destino)){
+        grafo[origen].insert({destino, costo});
+        if (!dirigido)
+            grafo[destino].insert({origen, costo});
+    }
 }
-
 // ----------------------------------------------------------------------------------------------------------------- //
 
 template <typename C>
@@ -303,6 +311,10 @@ void Grafo<C>::vaciar()
 
     grafo.clear(); // O(n)
 }
+
+
+template <typename C>
+bool Grafo<C>::esDirigido()const{return dirigido;}
 
 template class Grafo<int>;
 template class Grafo<char>;

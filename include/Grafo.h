@@ -22,6 +22,7 @@ public:
 
 public:
 	Grafo();
+	Grafo(bool esDirigido);
 	Grafo(const Grafo &otroGrafo);
 	~Grafo();
 
@@ -51,8 +52,11 @@ public:
 
 	void vaciar();
 
+    bool esDirigido() const;
+
 private:
 	std::map<int, std::map<int, C>> grafo;
+    bool dirigido;
 };
 
 // ----------------------------------------------------------------------------------------------------------------- //
