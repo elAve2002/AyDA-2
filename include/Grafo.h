@@ -1,3 +1,6 @@
+#ifndef GRAFO_H  // <--- AGREGAR ESTO AL INICIO
+#define GRAFO_H  // <--- AGREGAR ESTO
+
 #include <iostream>
 #include <list>
 #include <map>
@@ -87,3 +90,4 @@ std::ostream &operator<<(std::ostream &salida, const Grafo<C> &grafo)
 	return salida;
 }
 
+#endif

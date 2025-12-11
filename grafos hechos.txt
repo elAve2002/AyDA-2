@@ -65,7 +65,72 @@
 
     bosqueBFS(G,camino);
 
-############################################################################################
+##################################FLOYD primer ejemplo##########################################################
 
 
+    Grafo<int> G = Grafo<int>(true);
+    G.agregarVertice(1);
+    G.agregarVertice(2);    
+    G.agregarVertice(3);
+    
+    G.agregarArco(1, 2, 8);
+    G.agregarArco(1, 1, 2);
+    G.agregarArco(1, 3, 5);
+    G.agregarArco(2, 1, 3);
+    G.agregarArco(3, 2, 2);
+     
+    Floyd floyd(G);
+    
+    int i =0;
+    for (const Table& tabla : floyd.getListaDeTablas()) {
+        std::cout << tabla << "\n\n";
+        i++;
+        if(i!=0 && i%2==0){
+            std::cout << "----------------------------------\n";
+        }
+    }
+
+    list<int> caminoMin;
+    floyd.caminoMinimo(1, 2, caminoMin);
+    std::cout << "Camino minimo de 1 a 2: ";
+    for (int v : caminoMin) {
+        std::cout << v << " ";
+    }
+
+
+##################################FLOYD ejemplo largo##########################################################
+
+
+    Grafo<int> G = Grafo<int>(false);
+    G.agregarVertice(1);
+    G.agregarVertice(2);    
+    G.agregarVertice(3);
+    G.agregarVertice(4);
+    G.agregarVertice(5);
+    G.agregarVertice(6);
+    
+    G.agregarArco(1, 2, 3);
+    G.agregarArco(1, 3, 5);
+    G.agregarArco(1, 4, 1);
+
+    G.agregarArco(2, 5, 9);
+
+    G.agregarArco(3, 5, 7);
+    G.agregarArco(3, 4, 7);
+    G.agregarArco(3, 6, 1);
+
+    G.agregarArco(4, 6, 4);
+     
+    Floyd floyd(G);
+    
+    int i =0;
+    for (const Table& tabla : floyd.getListaDeTablas()) {
+        std::cout << tabla << "\n\n";
+        i++;
+        if(i!=0 && i%2==0){
+            std::cout << "----------------------------------\n";
+        }
+    }
+
+#############################################################################################################
 

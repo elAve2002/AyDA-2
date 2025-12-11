@@ -4,7 +4,7 @@
 #include <list>
 #include <map>
 
-//#include "Floyd.h"
+#include "Floyd.h"
 
 using namespace tabulate;
 using namespace std;
@@ -92,7 +92,6 @@ void imprimirListaAdyacentes(const list<Grafo<int>::Arco>& listaAdyacentes) {
 int main() {
     
 
-    list<int> camino;
     Grafo<int> G = Grafo<int>(false);
     G.agregarVertice(1);
     G.agregarVertice(2);    
@@ -100,60 +99,32 @@ int main() {
     G.agregarVertice(4);
     G.agregarVertice(5);
     G.agregarVertice(6);
-    G.agregarVertice(7);
-    G.agregarVertice(8);
-    G.agregarVertice(9);
-    G.agregarVertice(10);
-    G.agregarVertice(11);
+    
+    G.agregarArco(1, 2, 3);
+    G.agregarArco(1, 3, 5);
+    G.agregarArco(1, 4, 1);
 
-    G.agregarArco(1, 2, 0);
-    G.agregarArco(1, 3, 0);
-    G.agregarArco(1, 9, 0);
+    G.agregarArco(2, 5, 9);
 
-    G.agregarArco(2, 6, 0);
-    G.agregarArco(2, 3, 0);
+    G.agregarArco(3, 5, 7);
+    G.agregarArco(3, 4, 7);
+    G.agregarArco(3, 6, 1);
 
-    G.agregarArco(3, 4, 0);
-
-    G.agregarArco(4, 6, 0);
-
-    G.agregarArco(5, 7, 0);
-
-    G.agregarArco(6, 5, 0);
-    G.agregarArco(6, 7, 0);
-    G.agregarArco(6, 8, 0);
-
-    G.agregarArco(9, 10, 0);
-    G.agregarArco(9, 11, 0);
-
-    bosqueBFS(G,camino);
-
-    cout << "Recorrido BFS del grafo:\n";
-    for (const auto &v : camino) {
-        cout << v << " ";
+    G.agregarArco(4, 6, 4);
+     
+    Floyd floyd(G);
+    
+    int i =0;
+    for (const Table& tabla : floyd.getListaDeTablas()) {
+        std::cout << tabla << "\n\n";
+        i++;
+        if(i!=0 && i%2==0){
+            std::cout << "----------------------------------\n";
+        }
     }
-    cout << std::endl;  
 
 
-    /*
-    // Crear tabla
-    Table table;
-    
-    table.add_row({"Nodo", "Grado", "Visitado", "Color"});
-    table.add_row({"A", "2", "Sí", "Rojo"});
-    table.add_row({"B", "3", "No", "Azul"});
-    table.add_row({"C", "1", "Sí", "Verde"});
-    
-
-
-    // Formatear
-    table.format()
-        .font_style({FontStyle::bold})
-        .border_top("═")
-        .border_bottom("═");
-    
-    std::cout << "Información del Grafo:\n";
-    std::cout << table << std::endl;*/
+    std::cout << "FIN"<< std::endl;
     
     return 0;
 }
