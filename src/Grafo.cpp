@@ -218,6 +218,20 @@ void Grafo<C>::devolverAdyacentes(const int &origen, std::list<Arco> &adyacentes
     }
 }
 
+
+template <typename C>
+void Grafo<C>::devolverAdyacentesVertices(const int &origen, std::list<int> &adyacentes) const{
+    std::list<int> listVTemp;
+    this->devolverVertices(listVTemp);
+
+    for(const auto &v : listVTemp){
+        if(this->existeArco(origen,v)){
+            adyacentes.push_back(v);
+        }
+    }
+}
+
+
 // ----------------------------------------------------------------------------------------------------------------- //
 
 template <typename C>

@@ -51,6 +51,8 @@ public:
 
 	void devolverAdyacentes(const int &origen, std::list<Arco> &adyacentes) const;
 
+	void devolverAdyacentesVertices(const int &origen, std::list<int> &adyacentes) const;
+
 	void modificarCostoArco(const int &origen, const int &destino, const C &costo);
 
 	void vaciar();
