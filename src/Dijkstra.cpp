@@ -29,7 +29,7 @@ Table Dijkstra::creaTabla(vector<vector<int>> mat, list<int> s, int v) const {
     
     RowType primeraFila;
     
-    /*primeraFila.push_back("S");
+    primeraFila.push_back("S");
     primeraFila.push_back("V");
     
     list<int> vertices;
