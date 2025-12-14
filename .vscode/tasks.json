@@ -1,6 +1,10 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // =================================================================
+        //                 TAREAS PARA UBUNTU/LINUX (GCC)
+        // =================================================================
+
         {
             "label": "Crear carpeta output",
             "type": "shell",
@@ -20,7 +24,7 @@
         {
             "type": "cppbuild",
             "label": "Compilar (build)",
-            "command": "/usr/bin/g++",
+            "command": "/usr/bin/g++", // Comando/Ruta específica de Linux
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
@@ -30,11 +34,11 @@
                 "-Wextra",
                 "-std=c++17",
                 "-o",
-                "${workspaceFolder}/output/${workspaceFolderBasename}" 
-            ],
-        }
+                "${workspaceFolder}/output/${workspaceFolderBasename}" // Sin extensión .exe
+            ]
+        },
         
-        ,{
+        {
             "label": "Ejecutar (run)",
             "type": "shell",
             "command": "${workspaceFolder}/output/${workspaceFolderBasename}",
@@ -48,6 +52,7 @@
             },
             "problemMatcher": []
         },
+
         {
             "label": "Compilar y Ejecutar (build & run)",
             "dependsOrder": "sequence",
@@ -62,7 +67,86 @@
             },
             "presentation": {
                 "echo": false,
-                "reveal": "never",   // No mostrar esta tarea intermedia
+                "reveal": "never",
+                "focus": false
+            },
+            "problemMatcher": []
+        },
+        
+        // =================================================================
+        //                 TAREAS PARA WINDOWS (MinGW)
+        // =================================================================
+
+        {
+            "label": "Crear carpeta output Windows",
+            "type": "shell",
+            "command": "cmd", // Usamos cmd en Windows para el mkdir
+            "args": [
+                "/C", // Indica a cmd que ejecute el siguiente comando y luego termine
+                "mkdir",
+                "${workspaceFolder}\\output" // Uso de backslashes o forward-slashes aceptables
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false
+            },
+            "problemMatcher": []
+        },
+        
+        {
+            "type": "cppbuild",
+            "label": "Compilar (build) Windows",
+            "command": "g++", // Asume que MinGW está en el PATH, si no, usa la ruta completa
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-I${workspaceFolder}/include",  // Directorio de Headers
+                "${workspaceFolder}/src/*.cpp",  // **Todos** los .cpp en src/
+                "-Wall",
+                "-Wextra",
+                "-std=c++17",
+                "-o",
+                "${workspaceFolder}/output/${workspaceFolderBasename}.exe" // <--- ¡Añadido .exe!
+            ]
+        },
+        
+        {
+            "label": "Ejecutar (run) Windows",
+            "type": "shell",
+            "command": "${workspaceFolder}/output/${workspaceFolderBasename}.exe",
+            "args": [],
+            "options": {
+                // ESTO ES LO QUE DEBES AGREGAR:
+                "env": {
+                    "LC_ALL": "C"
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+
+        {
+            "label": "Compilar y Ejecutar (build & run) Windows",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                //"Crear carpeta output Windows",
+                "Compilar (build) Windows",
+                "Ejecutar (run) Windows"
+            ],
+            "group": {
+                "kind": "build"
+                // No tiene "isDefault": true, para que el default siga siendo la de Linux
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
                 "focus": false
             },
             "problemMatcher": []
