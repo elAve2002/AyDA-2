@@ -94,24 +94,26 @@ int main() {
     
 
     Grafo<int> G = Grafo<int>(true);
+    G.agregarVertice(0);
     G.agregarVertice(1);
     G.agregarVertice(2);    
     G.agregarVertice(3);
     G.agregarVertice(4);
     G.agregarVertice(5);
     
-    G.agregarArco(1, 2, 10);
-    G.agregarArco(1, 4, 30);
-    G.agregarArco(1, 5, 100);
+    G.agregarArco(0, 1, 24);
+    G.agregarArco(0, 5, 28);
+    
+    G.agregarArco(1, 2, 11);
 
-    G.agregarArco(2, 3, 50);
+    G.agregarArco(2, 3, 13);
 
-    G.agregarArco(3, 5, 10);
-
-    G.agregarArco(4, 3, 20);
-    G.agregarArco(4, 5, 60);
+    G.agregarArco(3, 5, 12);
+    G.agregarArco(3, 4, 20);
+    
+    G.agregarArco(4, 5, 15);
      
-    Dijkstra dijkstra(G,1);
+    Dijkstra dijkstra(G,2);
 
     
     cout<< dijkstra.getaTablaDijkstra() << std::endl;

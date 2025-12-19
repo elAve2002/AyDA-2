@@ -113,7 +113,10 @@ Dijkstra::Dijkstra(Grafo<int> &g, int vertice) : grafo(g) {
 
     this->tablaDijkstra.add_row(primeraFila); 
 
-    this->listaS.push_back(verticeInicio);  // S conjunto de vértices ya calculados, inicialmente S={f}
+    // inicio del algoritmo
+
+    list<int> S;
+    S.push_back(verticeInicio);  // S conjunto de vértices ya calculados, inicialmente S={f}
 
     map<int, int> D;  // Mapa de distancias desde el vértice inicial
     for (const auto &v : vertices) {
@@ -125,68 +128,76 @@ Dijkstra::Dijkstra(Grafo<int> &g, int vertice) : grafo(g) {
             D[v] = INT_MAX; 
         }
     }
-
-
-    RowType filaTempa;
-
-    filaTempa.push_back(listaAString(listaS));
-    filaTempa.push_back("-");
-    for (const auto &v : vertices) {
-        if(verticeInicio == v){
-            filaTempa.push_back("0*");
-        } else if(grafo.existeArco(verticeInicio, v)){
-            filaTempa.push_back(formatValue(D[v]));
-        } else {
-            filaTempa.push_back("INF");
-        }
-    }
-
-    tablaDijkstra.add_row(filaTempa);
-
-    int n = vertices.size();
-
-    for(int i = 0; i < n - 1; ++i){  // Repetir n-1 veces
-
-        // Encontrar el vértice fuera de S con la distancia mínima
-        int minDist = INT_MAX;
-        int verticeMin = -1;
-        for (const auto &v : vertices) {
-            if (std::find(listaS.begin(), listaS.end(), v) == listaS.end()) { // Si v no está en S
-                if (D[v] < minDist) {
-                    minDist = D[v];
-                    verticeMin = v;
-                }
-            }
-        }
-
-        listaS.push_back(verticeMin);
-
-
-        RowType filaTemp;
-
-        filaTemp.push_back(listaAString(listaS));
-        filaTemp.push_back(std::to_string(verticeMin));
-
-        list<int> adyacentesAMin;
-        grafo.devolverAdyacentesVertices(verticeMin, adyacentesAMin);
-
-        for(const auto &v: adyacentesAMin){
-            if (std::find(listaS.begin(), listaS.end(), v) == listaS.end()) { // Si v no está en S
-                int nuevaDist = (D[verticeMin] == INT_MAX) ? INT_MAX : D[verticeMin] + grafo.costoArco(verticeMin, v);
-                if (nuevaDist < D[v]) {
-                    D[v] = nuevaDist;
-                }
-            }
-        }
-
-    }
-
-
-
     
+    map<int,int> P; // P(i) es el vertice anterior a i en el camino desde f
+    list<int> v;
+    g.devolverVertices(v);
+
+    int n = g.devolverLongitud();
+    for (int i=1; i<n; i++){
+        int w = getVerticeDMin(v,S,D);
+        S.push_back(w);
+
+        for(const auto &vertice: disponiblesYAdy(v,S,w)){
+            int costo = grafo.costoArco(w, vertice);
+            if (D[vertice] > D[w] + costo) {
+                D[vertice] = D[w] + costo;
+                P[vertice] = w;
+            }
+
+        }
 
 
 
+    }
+
+
+}
+
+
+list<int> Dijkstra::disponibles(list<int>v, list<int> s) const{ // los vertices disponibles son V-S
+    list<int> resultado;
+
+    for(const auto &temp: v){
+        auto it = find(s.begin(), s.end(), temp);
+        if (it != s.end()){
+            resultado.push_back(temp);
+        }
+    }
+
+    return resultado;
+}
+
+list<int> Dijkstra::disponiblesYAdy(list<int> v, list<int> s, int vertice) const {
+    list<int> resultado;
+    list<int> disponiblesList = disponibles(v, s);
+    list<int> adyacentes;
+
+    grafo.devolverAdyacentesVertices(vertice, adyacentes);
+
+    // Intersección: solo los que están en ambos
+    for (const auto &elem : adyacentes) {
+        auto it = std::find(disponiblesList.begin(), disponiblesList.end(), elem);
+        if (it != disponiblesList.end()) { // si está en disponibles
+            resultado.push_back(elem);
+        }
+    }
+
+    return resultado;
+}
+
+int Dijkstra::getVerticeDMin(list<int> v,list<int> s, map<int, int> d) const {
+    int min = INT_MAX;
+    
+    for (const auto &temp : disponibles(v,s)) {
+        auto it = d.find(temp); 
+        if (it != d.end()) {
+            if (it->second <= min)
+                min = it->second;
+        }
+    }
+
+    return min;
 }
 
 Dijkstra::~Dijkstra() {
